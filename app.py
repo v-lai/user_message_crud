@@ -151,4 +151,4 @@ def m_edit(id, mid):
     return render_template('/messages/edit.html', id=check_user.id, message=check_message, form=mform)
 
 if __name__ == '__main__':
-    app.run(port=3000, debug=True)
+    app.run()
