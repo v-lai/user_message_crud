@@ -8,9 +8,15 @@ import jinja2
 
 app = Flask(__name__)
 modus = Modus(app)
+
+if os.environ.get('ENV') == 'production:
+    app.config.from_object('config.ProductionConfig')
+else:
+    app.config.from_object('config.DevelopmentConfig')
+
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://localhost/user-sql-alchemy'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
 
 app.jinja_env.undefined = jinja2.StrictUndefined
