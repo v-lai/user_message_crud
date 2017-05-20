@@ -1,0 +1,38 @@
+{% extends './base.html' %} 
+{% block title %} 
+user app add new user 
+{% endblock %} 
+
+{% block content %}
+{% with messages = get_flashed_messages() %} 
+    {% if messages %} 
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %} 
+    {% endif %} 
+{% endwith %} 
+<h1>add a new user</h1>
+<form action="{{url_for('new')}}" method="POST">
+    {{ form.csrf_token }} 
+    {% for field in form %} 
+        {% if field.name != 'csrf_token' %}
+        <p>
+        {{ field.label }} {{ field }}
+        <span>
+        {% if field.errors %}
+            {% for error in field.errors %}
+                {{ error }}
+            {% endfor %}
+        {% endif %}
+        </span>
+        </p>
+        {% endif %} 
+    {% endfor %}
+     <button class="btn btn-success" type="submit">add a user</button>
+</form>
+
+<p></p>
+<p>
+    <a href="{{url_for('index')}}">see all the users</a>
+</p>
+{% endblock %}

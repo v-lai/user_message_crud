@@ -1,0 +1,46 @@
+{% extends './base.html' %}
+{% block title %}
+user app edit {{ id }}
+{% endblock %}
+
+{% import './forms.html' as forms with context %}
+{% block content %}
+{% with messages = get_flashed_messages() %} 
+    {% if messages %} 
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %} 
+    {% endif %} 
+{% endwith %} 
+
+<h1>edit user {{ id }} info</h1>
+<form action="{{url_for('edit', id=id)}}?_method=PATCH" method="POST">
+    {{ form.csrf_token }} 
+    {% for field in form %} 
+        {% if field.name != 'csrf_token' %}
+        <p>
+            {{ field.label }} {{ forms.inputs(field.name) }}
+            <span>
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    {{ error }}
+                {% endfor %}
+            {% endif %}
+            </span>
+        </p>
+        {% endif %} 
+    {% endfor %}
+     <button class="btn btn-warning" type="submit">edit user info</button>
+</form>
+<p></p>
+<form action="{{url_for('show', id=id)}}?_method=DELETE" method="POST">
+    <input class="btn btn-danger" type="submit" value="delete user">
+</form>
+<p></p>
+<p>
+    <a href="{{url_for('index')}}">see all the users</a>
+</p>
+<p>
+    <a href="{{url_for('show', id=id)}}">show {{ id }}'s user page</a> 
+</p>
+{% endblock %}
