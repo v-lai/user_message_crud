@@ -9,7 +9,7 @@ import jinja2
 app = Flask(__name__)
 modus = Modus(app)
 
-if os.environ.get('ENV') == 'production:
+if os.environ.get('ENV') == 'production':
     app.config.from_object('config.ProductionConfig')
 else:
     app.config.from_object('config.DevelopmentConfig')
