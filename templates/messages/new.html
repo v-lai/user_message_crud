@@ -4,13 +4,6 @@ user app add new message
 {% endblock %}
 
 {% block content %}
-{% with messages = get_flashed_messages() %} 
-    {% if messages %} 
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %} 
-    {% endif %} 
-{% endwith %} 
 <h1>add a new message</h1>
 <form action="{{url_for('m_new', id=id, form=form)}}" method="POST">
      {{ form.csrf_token }} 

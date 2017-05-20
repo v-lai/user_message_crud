@@ -4,13 +4,6 @@ user app {{ user.username }} user page
 {% endblock %}
 
 {% block content %}
-{% with messages = get_flashed_messages() %} 
-    {% if messages %} 
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %} 
-    {% endif %} 
-{% endwith %} 
 <h1>{{ user.username }}'s user information</h1>
 <div class="table-responsive">
     <table class="table table-bordered">

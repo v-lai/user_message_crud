@@ -78,13 +78,15 @@ def show(id):
 
 @app.route('/users/<int:id>/edit', methods=['GET', 'POST'])
 def edit(id):
-    form = UserForm(request.form)
+    edit_user = User.query.filter_by(id=id).first_or_404()
+    form = UserForm(obj=edit_user)
+    form.populate_obj(edit_user)
     if request.method == 'POST' and form.validate():
-        db.session.add(User(request.form['username'], request.form['email'], request.form['first_name'], request.form['last_name']))
+        db.session.add(edit_user)
         db.session.commit()
         flash("Edited user!")
         return redirect(url_for('index'))
-    return render_template('/users/edit.html', id=id, form=form)
+    return render_template('/users/edit.html', id=id, user=edit_user, form=form)
 
 
 
@@ -142,13 +144,14 @@ def m_edit(id, mid):
     check_user = User.query.filter_by(id=id).first_or_404()
     check_message = Message.query.filter_by(id=mid).first_or_404()
     
-    mform = MessageForm(request.form)
+    mform = MessageForm(obj=check_message)
+    mform.populate_obj(check_message)
     if request.method == 'POST' and mform.validate():
-        db.session.add(Message(request.form['text'], request.form['user_id']))
+        db.session.add(check_message)
         db.session.commit()
         flash("Edited message!")
-        return redirect(url_for('m_index'))
-    return render_template('/messages/edit.html', id=check_user.id, message=check_message, form=mform)
+        return redirect(url_for('m_index', id=check_user.id))
+    return render_template('/messages/edit.html', id=check_user.id, user=check_user, message=check_message, form=mform)
 
 if __name__ == '__main__':
     app.run()

@@ -4,13 +4,6 @@ user app add new user
 {% endblock %} 
 
 {% block content %}
-{% with messages = get_flashed_messages() %} 
-    {% if messages %} 
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %} 
-    {% endif %} 
-{% endwith %} 
 <h1>add a new user</h1>
 <form action="{{url_for('new')}}" method="POST">
     {{ form.csrf_token }} 
