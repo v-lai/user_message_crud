@@ -1,11 +1,11 @@
 {% extends './base.html' %}
 {% block title %}
-user app edit {{ message.text }}
+user app edit message
 {% endblock %}
 
 {% block content %}
-<h1>edit: {{ message.text }}</h1>
-<form action="{{url_for('m_edit', id=id, user=user, mid=message.id)}}?_method=PATCH" method="POST">
+<h1>edit message text</h1>
+<form action="{{url_for('m_show', id=user.id, mid=message.id)}}?_method=PATCH" method="POST">
     {{ form.csrf_token }} 
     {% for field in form %} 
         {% if field.name != 'csrf_token' %}
@@ -24,14 +24,14 @@ user app edit {{ message.text }}
      <button class="btn btn-warning" type="submit">edit message</button>
 </form>
 <p></p>
-<form action="{{url_for('m_show', id=id, mid=message.id)}}?_method=DELETE" method="POST">
+<form action="{{url_for('m_show', id=user.id, mid=message.id)}}?_method=DELETE" method="POST">
     <input class="btn btn-danger" type="submit" value="delete message">
 </form>
 <p></p>
 <p>
-    <a href="{{url_for('m_index', id=id)}}">see all the messages</a>
+    <a href="{{url_for('m_index', id=user.id)}}">see all {{user.username}}'s messages</a>
 </p>
 <p>
-    <a href="{{url_for('show', id=id)}}">show this user</a> 
+    <a href="{{url_for('show', id=user.id)}}">show user {{user.username}}</a> 
 </p>
 {% endblock %}

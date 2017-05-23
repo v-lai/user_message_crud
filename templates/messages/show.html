@@ -24,9 +24,9 @@ user app message {{message.id}} page
 
 <p></p>
 <p>
-    <a class="btn btn-warning" href="{{url_for('m_edit', id=id, mid=message.id)}}">edit this message</a> 
+    <a class="btn btn-warning" href="{{url_for('m_edit', id=user.id, mid=message.id)}}">edit this message</a> 
 </p>
 <p>
-    <a href="{{url_for('m_index', id=id)}}">see all the messages of user {{ id }}</a>
+    <a href="{{url_for('m_index', id=user.id)}}">see all the messages of user {{ user.username }}</a>
 </p>
 {% endblock %}

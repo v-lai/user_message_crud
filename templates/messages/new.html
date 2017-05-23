@@ -5,7 +5,7 @@ user app add new message
 
 {% block content %}
 <h1>add a new message</h1>
-<form action="{{url_for('m_new', id=id, form=form)}}" method="POST">
+<form action="{{url_for('m_new', id=user.id, form=form)}}" method="POST">
      {{ form.csrf_token }} 
      {% for field in form %} 
         {% if field.name != 'csrf_token' %}
@@ -25,6 +25,6 @@ user app add new message
 </form>
 <p></p>
 <p>
-    <a href="{{url_for('m_index', id=id)}}">see all the messages</a>
+    <a href="{{url_for('m_index', id=user.id)}}">see all the messages</a>
 </p>
 {% endblock %}

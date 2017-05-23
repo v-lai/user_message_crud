@@ -66,13 +66,13 @@ def show(id):
         db.session.commit()
         flash("User info updated!")
         return redirect(url_for('index'))
-    
+
     if request.method == b"DELETE":
         db.session.delete(update_user)
         db.session.commit()
         flash("User deleted!")
         return redirect(url_for('index'))
-    
+
     user = User.query.filter_by(id=id).first_or_404()
     return render_template('/users/show.html', user=user)
 
@@ -80,13 +80,7 @@ def show(id):
 def edit(id):
     edit_user = User.query.filter_by(id=id).first_or_404()
     form = UserForm(obj=edit_user)
-    form.populate_obj(edit_user)
-    if request.method == 'POST' and form.validate():
-        db.session.add(edit_user)
-        db.session.commit()
-        flash("Edited user!")
-        return redirect(url_for('index'))
-    return render_template('/users/edit.html', id=id, user=edit_user, form=form)
+    return render_template('/users/edit.html', user=edit_user, form=form)
 
 
 
@@ -99,14 +93,14 @@ class Message(db.Model):
     def __init__(self, text, user_id):
         self.text = text
         self.user_id = user_id
-    
+
     def __repr__(self):
         return "{} wrote text: {}, user_id: {}".format(self.users.username, self.text, self.user_id)
 
 @app.route('/users/<int:id>/messages')
 def m_index(id):
     check_user = User.query.filter_by(id=id).first_or_404()
-    return render_template('/messages/index.html', id=check_user.id, messages=check_user.messages)
+    return render_template('/messages/index.html', user=check_user)
 
 @app.route('/users/<int:id>/messages/new', methods=["GET", "POST"])
 def m_new(id):
@@ -116,8 +110,8 @@ def m_new(id):
         db.session.add(Message(request.form['text'], request.form['user_id']))
         db.session.commit()
         flash("New message posted!")
-        return redirect(url_for('m_index', id=check_user.id, messages=check_user.messages))
-    return render_template('/messages/new.html', id=check_user.id, form=mform)
+        return redirect(url_for('m_index', id=check_user.id))
+    return render_template('/messages/new.html', user=check_user, form=mform)
 
 @app.route('/users/<int:id>/messages/<int:mid>', methods=["GET", "PATCH", "DELETE"])
 def m_show(id, mid):
@@ -130,28 +124,22 @@ def m_show(id, mid):
         db.session.commit()
         flash("Message edited!")
         return redirect(url_for('m_index', id=check_user.id))
-    
+
     if request.method == b"DELETE":
         db.session.delete(check_message)
         db.session.commit()
         flash("Message deleted!")
         return redirect(url_for('m_index', id=check_user.id))
 
-    return render_template('/messages/show.html', id=check_user.id, message=check_message)
+    return render_template('/messages/show.html', user=check_user, message=check_message)
 
-@app.route('/users/<int:id>/messages/<int:mid>/edit', methods=['GET', 'POST'])
+@app.route('/users/<int:id>/messages/<int:mid>/edit') #, methods=['GET', 'POST'])
 def m_edit(id, mid):
     check_user = User.query.filter_by(id=id).first_or_404()
     check_message = Message.query.filter_by(id=mid).first_or_404()
-    
+
     mform = MessageForm(obj=check_message)
-    mform.populate_obj(check_message)
-    if request.method == 'POST' and mform.validate():
-        db.session.add(check_message)
-        db.session.commit()
-        flash("Edited message!")
-        return redirect(url_for('m_index', id=check_user.id))
-    return render_template('/messages/edit.html', id=check_user.id, user=check_user, message=check_message, form=mform)
+    return render_template('/messages/edit.html', user=check_user, message=check_message, form=mform)
 
 if __name__ == '__main__':
     app.run()
