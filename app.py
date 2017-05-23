@@ -76,7 +76,7 @@ def show(id):
     user = User.query.filter_by(id=id).first_or_404()
     return render_template('/users/show.html', user=user)
 
-@app.route('/users/<int:id>/edit', methods=['GET', 'POST'])
+@app.route('/users/<int:id>/edit')
 def edit(id):
     edit_user = User.query.filter_by(id=id).first_or_404()
     form = UserForm(obj=edit_user)
@@ -133,7 +133,7 @@ def m_show(id, mid):
 
     return render_template('/messages/show.html', user=check_user, message=check_message)
 
-@app.route('/users/<int:id>/messages/<int:mid>/edit') #, methods=['GET', 'POST'])
+@app.route('/users/<int:id>/messages/<int:mid>/edit')
 def m_edit(id, mid):
     check_user = User.query.filter_by(id=id).first_or_404()
     check_message = Message.query.filter_by(id=mid).first_or_404()
